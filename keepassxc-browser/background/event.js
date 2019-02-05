@@ -286,6 +286,7 @@ kpxcEvent.messageHandlers = {
     'check_update_keepassxc': kpxcEvent.onCheckUpdateKeePassXC,
     'generate_password': keepass.generatePassword,
     'get_connected_database': kpxcEvent.onGetConnectedDatabase,
+    'get_database_groups': keepass.getDatabaseGroups,
     'get_keepassxc_versions': kpxcEvent.onGetKeePassXCVersions,
     'get_status': kpxcEvent.onGetStatus,
     'get_tab_information': kpxcEvent.onGetTabInformation,
