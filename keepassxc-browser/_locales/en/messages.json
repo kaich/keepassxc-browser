@@ -95,6 +95,10 @@
         "message": "No logins found.",
         "description": "No logins found."
     },
+    "passwordGeneratorShow": {
+        "message": "Show password generator",
+        "description": "Show password generator text."
+    },
     "passwordGeneratorPlaceholder": {
         "message": "Generated password",
         "description": "Input field placeholder for generated password."

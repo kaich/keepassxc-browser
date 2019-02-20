@@ -37,21 +37,21 @@ browser.runtime.onMessage.addListener(function(req, sender, callback) {
                     cip.setValueWithChange(cip.u, cip.credentials[req.id].login);
                     combination = cipFields.getCombination('username', cip.u);
                     browser.runtime.sendMessage({
-                        action: 'page_set_login_id', args: [req.id]
+                        action: 'page_set_login_id', args: [ req.id ]
                     });
                     cip.u.focus();
                 }
                 if (cip.p) {
                     cip.setValueWithChange(cip.p, cip.credentials[req.id].password);
                     browser.runtime.sendMessage({
-                        action: 'page_set_login_id', args: [req.id]
+                        action: 'page_set_login_id', args: [ req.id ]
                     });
                     combination = cipFields.getCombination('password', cip.p);
                 }
 
                 let list = [];
                 if (cip.fillInStringFields(combination.fields, cip.credentials[req.id].stringFields, list)) {
-                    cipForm.destroy(false, {'password': list.list[0], 'username': list.list[1]});
+                    cipForm.destroy(false, { 'password': list.list[0], 'username': list.list[1] });
                 }
             }
         } else if (req.action === 'fill_username_password') {
@@ -89,9 +89,10 @@ browser.runtime.onMessage.addListener(function(req, sender, callback) {
             });
         } else if (req.action === 'ignore-site') {
             cip.ignoreSite(req.args);
-        }
-        else if (req.action === 'check_database_hash' && 'hash' in req) {
+        } else if (req.action === 'check_database_hash' && 'hash' in req) {
             cip.detectDatabaseChange(req.hash);
+        } else if (req.action === 'show_password_generator') {
+            cipPassword.showDialog();
         }
     }
 });
@@ -108,7 +109,7 @@ cipAutocomplete.init = function(field) {
     }
 
     const acMenu = jQuery('#kpxc-ac-menu');
-    if (acMenu.length == 0) {
+    if (acMenu.length === 0) {
         jQuery('<div id=\"kpxc-ac-menu\" class=\"kpxc\"></div>').appendTo('body');
     }
 
@@ -408,6 +409,10 @@ cipPassword.createIcon = function(field) {
     jQuery('body').append($icon);
 };
 
+cipPassword.showDialog = function() {
+    $('.cip-genpw-icon').click();
+};
+
 cipPassword.setIconPosition = function($icon, $field) {
     $icon.css('top', $field.offset().top + $icon.data('offset') + 1)
         .css('left', $field.offset().left + $field.outerWidth() - $icon.data('size') - $icon.data('offset'));
@@ -556,6 +561,7 @@ cipDefine.selection = {
     fields: []
 };
 cipDefine.eventFieldClick = null;
+cipDefine.keyDown = null;
 
 cipDefine.init = function() {
     const $backdrop = jQuery('<div>').attr('id', 'b2c-backdrop').addClass('b2c-modal-backdrop');
@@ -758,15 +764,28 @@ cipDefine.markFields = function($chooser, $pattern) {
         }
 
         if (cipFields.isVisible(this)) {
-            const $field = jQuery('<div>').addClass('b2c-fixed-field')
+            const $field = jQuery('<input>').addClass('b2c-fixed-field')
                 .css('top', jQuery(this).offset().top)
                 .css('left', jQuery(this).offset().left)
                 .css('width', jQuery(this).outerWidth())
                 .css('height', jQuery(this).outerHeight())
                 .attr('data-cip-id', jQuery(this).attr('data-cip-id'))
                 .click(cipDefine.eventFieldClick)
-                .hover(function() {jQuery(this).addClass('b2c-fixed-hover-field');}, function() {jQuery(this).removeClass('b2c-fixed-hover-field');});
+                .hover(function() {
+                    jQuery(this).addClass('b2c-fixed-hover-field');
+                }, function() {
+                    jQuery(this).removeClass('b2c-fixed-hover-field');
+                });
             $chooser.append($field);
+
+            // Keyboard events for the input when custom selection is activated
+            jQuery(this)
+                .keypress(cipDefine.keyDown)
+                .focus(function() {
+                    $field.addClass('b2c-fixed-hover-field');
+                }).blur(function() {
+                    $field.removeClass('b2c-fixed-hover-field');
+                });
         }
     });
 };
@@ -805,6 +824,16 @@ cipDefine.prepareStep3 = function() {
     jQuery('div:first', jQuery('div#b2c-cipDefine-description')).text(tr('defineConfirmSelection'));
 };
 
+cipDefine.keyDown = function(e) {
+    if (e.key === 'Enter') {
+        // TODO: Selects the current input and continues
+        e.preventDefault();
+    } else if (e.key === 'Escape') {
+        // Close the custom selection
+        jQuery('div#b2c-backdrop').remove();
+        jQuery('div#b2c-cipDefine-fields').remove();
+    }
+};
 
 
 var cipFields = {};
