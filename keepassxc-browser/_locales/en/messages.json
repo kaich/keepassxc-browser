@@ -23,6 +23,10 @@
         "message": "Save credentials",
         "description": "Save credentials using the extension popup icon."
     },
+    "contextMenuShowPasswordGenerator": {
+        "message": "Show password generator",
+        "description": "Show password generator text."
+    },
     "rememberCredentialsPopup": {
         "message": "Create or modify the credentials by clicking on the extension icon.",
         "description": "Notification text when saving credentials from the context menu."
@@ -94,10 +98,6 @@
     "errorMessageNoLogins": {
         "message": "No logins found.",
         "description": "No logins found."
-    },
-    "passwordGeneratorShow": {
-        "message": "Show password generator",
-        "description": "Show password generator text."
     },
     "passwordGeneratorPlaceholder": {
         "message": "Generated password",
@@ -762,5 +762,17 @@
     "optionsAboutLicenses": {
         "message": "Licenses:",
         "description": "About page text of licenses."
+    },
+    "optionsErrorInvalidValue": {
+        "message": "Invalid value. Please check the input.",
+        "description": "Error shown when input field has an incorrect value."
+    },
+    "optionsErrorInvalidURL": {
+        "message": "Invalid URL. Please check the input.",
+        "description": "Error shown when input field has an incorrect URL."
+    },
+    "optionsErrorValueExists": {
+        "message": "The value already exists in the list.",
+        "description": "Error shown when trying to add a duplicate value to the list."
     }
 }

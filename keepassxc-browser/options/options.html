@@ -233,7 +233,7 @@
               </div>
               <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove"></span> <span data-i18n="optionsButtonCancel"></span></button>
-                <button class="btn yes btn-primary"><span class="glyphicon glyphicon-ok"></span> <span data-i18n="optionsButtonRemoveNow"></span></button>
+                <button class="btn yes btn-primary" autofocus><span class="glyphicon glyphicon-ok"></span> <span data-i18n="optionsButtonRemoveNow"></span></button>
               </div>
             </div>
           </div>
@@ -281,7 +281,7 @@
               </div>
               <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove"></span> <span data-i18n="optionsButtonCancel"></span></button>
-                <button class="btn yes btn-primary"><span class="glyphicon glyphicon-ok"></span> <span data-i18n="optionsButtonRemoveNow"></span></button>
+                <button class="btn yes btn-primary" autofocus><span class="glyphicon glyphicon-ok"></span> <span data-i18n="optionsButtonRemoveNow"></span></button>
               </div>
             </div>
           </div>
@@ -303,10 +303,10 @@
         </p>
         <hr />
         <div class="form-group">
-          <label for="ignoreManualAdd" data-i18n="optionsSitePreferencesManualAddText"></label>
-          <div class="control-group">
+          <label for="manualUrl" data-i18n="optionsSitePreferencesManualAddText"></label>
+          <div class="control-group" id="manualUrlGroup">
             <div class="input-append">
-              <input type="url" id="manualUrl"/>
+              <input type="url" id="manualUrl" pattern="ftp://.*|http://.*|https://.*" minlength="10">
               <button class="btn btn-sm btn-primary" id="sitePreferencesManualAdd" type="button"><span class="glyphicon glyphicon-plus-sign"></span> <span data-i18n="optionsButtonAdd"></span></button>
             </div>
           </div>
@@ -352,7 +352,7 @@
               </div>
               <div class="modal-footer">
                 <button class="btn" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove"></span> <span data-i18n="optionsButtonCancel"></span></button>
-                <button class="btn yes btn-primary"><span class="glyphicon glyphicon-ok"></span> <span data-i18n="optionsButtonRemoveNow"></span></button>
+                <button class="btn yes btn-primary" autofocus><span class="glyphicon glyphicon-ok"></span> <span data-i18n="optionsButtonRemoveNow"></span></button>
               </div>
             </div>
           </div>

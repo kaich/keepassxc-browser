@@ -83,7 +83,7 @@
             }
         },
         "show_password_generator": {
-            "description": "__MSG_passwordGeneratorShow__",
+            "description": "__MSG_contextMenuShowPasswordGenerator__",
             "suggested_key": {
                 "default": "Alt+Shift+G",
                 "mac": "MacCtrl+Shift+G"

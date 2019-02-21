@@ -241,6 +241,7 @@ cipPassword.createDialog = function() {
         .attr('type', 'text')
         .attr('aria-describedby', 'cip-genpw-quality')
         .attr('placeholder', tr('passwordGeneratorPlaceholder'))
+        .attr('tabindex', -1)
         .addClass('genpw-text ui-widget-content ui-corner-all')
         .on('change keypress paste textInput input', function() {
             jQuery('#cip-genpw-btn-clipboard:first').removeClass('btn-success');
