@@ -582,6 +582,14 @@ cipDefine.init = function() {
     cipDefine.resetSelection();
     cipDefine.prepareStep1();
     cipDefine.markAllUsernameFields($chooser);
+
+    document.addEventListener('keydown', cipDefine.keyDown);
+};
+
+cipDefine.close = function() {
+    $('div#b2c-backdrop').remove();
+    $('div#b2c-cipDefine-fields').remove();
+    document.removeEventListener('keydown', cipDefine.keyDown);
 };
 
 cipDefine.initDescription = function() {
@@ -595,8 +603,7 @@ cipDefine.initDescription = function() {
         .addClass('btn')
         .addClass('btn-danger')
         .click(function(e) {
-            jQuery('div#b2c-backdrop').remove();
-            jQuery('div#b2c-cipDefine-fields').remove();
+            cipDefine.close();
         });
     const $btnSkip = jQuery('<button>').text(tr('defineSkip')).attr('id', 'b2c-btn-skip')
         .addClass('btn')
@@ -725,9 +732,10 @@ cipDefine.isFieldSelected = function($cipId) {
 };
 
 cipDefine.markAllUsernameFields = function($chooser) {
-    cipDefine.eventFieldClick = function(e) {
-        cipDefine.selection.username = jQuery(this).data('cip-id');
-        jQuery(this).addClass('b2c-fixed-username-field').text(tr('username')).unbind('click');
+    cipDefine.eventFieldClick = function(e, elem) {
+        const field = elem ? jQuery(elem) : jQuery(this);
+        cipDefine.selection.username = field.data('cip-id');
+        field.addClass('b2c-fixed-username-field').text(tr('username')).unbind('click');
         cipDefine.prepareStep2();
         cipDefine.markAllPasswordFields(jQuery('#b2c-cipDefine-fields'));
     };
@@ -735,9 +743,10 @@ cipDefine.markAllUsernameFields = function($chooser) {
 };
 
 cipDefine.markAllPasswordFields = function($chooser, more) {
-    cipDefine.eventFieldClick = function(e) {
-        cipDefine.selection.password = jQuery(this).data('cip-id');
-        jQuery(this).addClass('b2c-fixed-password-field').text(tr('password')).unbind('click');
+    cipDefine.eventFieldClick = function(e, elem) {
+        const field = elem ? jQuery(elem) : jQuery(this);
+        cipDefine.selection.password = field.data('cip-id');
+        field.addClass('b2c-fixed-password-field').text(tr('password')).unbind('click');
         cipDefine.prepareStep3();
         cipDefine.markAllStringFields(jQuery('#b2c-cipDefine-fields'));
     };
@@ -749,28 +758,31 @@ cipDefine.markAllPasswordFields = function($chooser, more) {
 };
 
 cipDefine.markAllStringFields = function($chooser) {
-    cipDefine.eventFieldClick = function(e) {
-        cipDefine.selection.fields[jQuery(this).data('cip-id')] = true;
+    cipDefine.eventFieldClick = function(e, elem) {
+        const field = elem ? jQuery(elem) : jQuery(this);
+        cipDefine.selection.fields[field.data('cip-id')] = true;
         const count = Object.keys(cipDefine.selection.fields).length;
-        jQuery(this).addClass('b2c-fixed-string-field').text(tr('defineStringField') + String(count)).unbind('click');
+        field.addClass('b2c-fixed-string-field').text(tr('defineStringField') + String(count)).unbind('click');
         jQuery('button#b2c-btn-confirm:first').addClass('b2c-btn-primary').attr('disabled', false);
     };
     cipDefine.markFields($chooser, cipFields.inputQueryPattern + ', select');
 };
 
 cipDefine.markFields = function($chooser, $pattern) {
+    let index = 1;
     jQuery($pattern).each(function() {
         if (cipDefine.isFieldSelected(jQuery(this).data('cip-id'))) {
             return true;
         }
 
         if (cipFields.isVisible(this)) {
-            const $field = jQuery('<input>').addClass('b2c-fixed-field')
+            const $field = jQuery('<div>').addClass('b2c-fixed-field')
                 .css('top', jQuery(this).offset().top)
                 .css('left', jQuery(this).offset().left)
                 .css('width', jQuery(this).outerWidth())
                 .css('height', jQuery(this).outerHeight())
                 .attr('data-cip-id', jQuery(this).attr('data-cip-id'))
+                .text(String(index) + '.')
                 .click(cipDefine.eventFieldClick)
                 .hover(function() {
                     jQuery(this).addClass('b2c-fixed-hover-field');
@@ -778,21 +790,15 @@ cipDefine.markFields = function($chooser, $pattern) {
                     jQuery(this).removeClass('b2c-fixed-hover-field');
                 });
             $chooser.append($field);
-
-            // Keyboard events for the input when custom selection is activated
-            jQuery(this)
-                .keypress(cipDefine.keyDown)
-                .focus(function() {
-                    $field.addClass('b2c-fixed-hover-field');
-                }).blur(function() {
-                    $field.removeClass('b2c-fixed-hover-field');
-                });
         }
+        ++index;
     });
+
+    $('b2c-fixed-field:first').focus();
 };
 
 cipDefine.prepareStep1 = function() {
-    jQuery('div#b2c-help').text('').css('margin-bottom', 0);
+    jQuery('div#b2c-help').text(tr('defineKeyboardText')).css('margin-bottom', '5px');
     jQuery('div#b2c-cipDefine-fields').removeData('username');
     jQuery('div#b2c-cipDefine-fields').removeData('password');
     jQuery('div.b2c-fixed-field', jQuery('div#b2c-cipDefine-fields')).remove();
@@ -804,7 +810,7 @@ cipDefine.prepareStep1 = function() {
 };
 
 cipDefine.prepareStep2 = function() {
-    jQuery('div#b2c-help').text('').css('margin-bottom', 0);
+    jQuery('div#b2c-help').text(tr('defineKeyboardText')).css('margin-bottom', '5px');
     jQuery('div.b2c-fixed-field:not(.b2c-fixed-username-field)', jQuery('div#b2c-cipDefine-fields')).remove();
     jQuery('div:first', jQuery('div#b2c-cipDefine-description')).text(tr('defineChoosePassword'));
     jQuery('button#b2c-btn-skip:first').data('step', '2');
@@ -825,14 +831,19 @@ cipDefine.prepareStep3 = function() {
     jQuery('div:first', jQuery('div#b2c-cipDefine-description')).text(tr('defineConfirmSelection'));
 };
 
+// Handle the keyboard events
 cipDefine.keyDown = function(e) {
-    if (e.key === 'Enter') {
-        // TODO: Selects the current input and continues
+    if (e.key === 'Escape') {
+        cipDefine.close();
+    } else if (e.keyCode >= 49 && e.keyCode <= 57) {
+        // Select input field by number
         e.preventDefault();
-    } else if (e.key === 'Escape') {
-        // Close the custom selection
-        jQuery('div#b2c-backdrop').remove();
-        jQuery('div#b2c-cipDefine-fields').remove();
+        const index = e.keyCode - 48;
+        const inputFields = $('div.b2c-fixed-field:not(.b2c-fixed-password-field,.b2c-fixed-username-field)');
+
+        if (inputFields.length >= index) {
+            cipDefine.eventFieldClick(e, inputFields[index - 1]);
+        }
     }
 };
 

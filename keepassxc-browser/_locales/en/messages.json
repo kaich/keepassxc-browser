@@ -187,6 +187,10 @@
         "message": "Please confirm your selection or choose more fields as <em>String fields</em>.",
         "description": "Confirm a selection text when choosing custom login fields which contains string fields."
     },
+    "defineKeyboardText": {
+        "message": "You can also use the numbers to choose the input fields from keyboard.",
+        "description": "Help text when choosing custom login fields."
+    },
     "username": {
         "message": "Username",
         "description": "General text for username."
@@ -724,7 +728,7 @@
         "description": "Site preferences info text, fourth part."
     },
     "optionsSitePreferencesManualAddText": {
-        "message": "Add URL manually:",
+        "message": "Add URL manually",
         "description": "Label for adding site manually on Site preferences tab."
     },
     "optionsSitePreferencesConfirmation": {
@@ -756,11 +760,11 @@
         "description": "About page text of KeePassXC version."
     },
     "optionsAboutContributors": {
-        "message": "Contributors:",
+        "message": "Contributors",
         "description": "About page text of contributors."
     },
     "optionsAboutLicenses": {
-        "message": "Licenses:",
+        "message": "Licenses",
         "description": "About page text of licenses."
     },
     "optionsErrorInvalidValue": {

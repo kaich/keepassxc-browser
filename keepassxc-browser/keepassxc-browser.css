@@ -171,6 +171,7 @@ input.genpw-text {
 .b2c-fixed-field {
     position: absolute;
     border: 2px solid #efefef;
+    color: #fff;
     cursor: pointer;
     z-index: 2147483646;
     text-align: left;
