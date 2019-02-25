@@ -27,6 +27,7 @@ kpxcDefine.init = function() {
     kpxcFields.prepareVisibleFieldsWithID('select');
 
     kpxcDefine.initDescription();
+    kpxcDefine.resetSelection();
     kpxcDefine.prepareStep1();
     kpxcDefine.markAllUsernameFields('#kpxcDefine-fields');
 
@@ -34,6 +35,11 @@ kpxcDefine.init = function() {
     kpxcDefine.dialog.onmousedown = function(e) {
         kpxcDefine.mouseDown(e);
     };
+};
+
+kpxcDefine.close = function() {
+    $('#kpxcDefine-backdrop').remove();
+    $('#kpxcDefine-fields').remove();
 };
 
 kpxcDefine.mouseDown = function(e) {
@@ -54,8 +60,7 @@ kpxcDefine.initDescription = function() {
     
     const buttonDismiss = kpxcUI.createElement('button', 'kpxc-button kpxc-red-button', { 'id': 'kpxcDefine-btn-dismiss' }, tr('defineDismiss'));
     buttonDismiss.onclick = function(e) {
-        $('#kpxcDefine-backdrop').remove();
-        $('#kpxcDefine-fields').remove();
+        kpxcDefine.close();
     };
 
     const buttonSkip = kpxcUI.createElement('button', 'kpxc-button kpxc-orange-button', { 'id': 'kpxcDefine-btn-skip' }, tr('defineSkip'));
@@ -114,7 +119,7 @@ kpxcDefine.initDescription = function() {
             args: [ kpxc.settings ]
         });
 
-        $('#kpxcDefine-btn-dismiss').click();
+        kpxcDefine.close();
     };
 
     description.append(buttonConfirm);
@@ -234,10 +239,11 @@ kpxcDefine.markFields = function(chooser, pattern) {
             field.onclick = function(e) {
                 kpxcDefine.eventFieldClick(e);
             };
-            field.onhover = function() {
-                i.classList.add('kpxcDefine-fixed-hover-field');
-            }, function() {
-                i.classList.remove('kpxcDefine-fixed-hover-field');
+            field.onmouseenter = function() {
+                field.classList.add('kpxcDefine-fixed-hover-field');
+            };
+            field.onmouseleave = function() {
+                field.classList.remove('kpxcDefine-fixed-hover-field');
             };
             const elem = $(chooser);
             if (elem) {
@@ -252,6 +258,7 @@ kpxcDefine.prepareStep1 = function() {
     help.style.marginBottom = '0px';
     help.textContent = '';
 
+    removeContent('div#kpxcDefine-fixed-field');
     $('#kpxcDefine-chooser-headline').textContent = tr('defineChooseUsername');
     kpxcDefine.dataStep = 1;
     $('#kpxcDefine-btn-skip').style.display = 'inline-block';
@@ -264,6 +271,7 @@ kpxcDefine.prepareStep2 = function() {
     help.style.marginBottom = '0px';
     help.textContent = '';
 
+    removeContent('div.kpxcDefine-fixed-field:not(.kpxcDefine-fixed-username-field)');
     $('#kpxcDefine-chooser-headline').textContent = tr('defineChoosePassword');
     kpxcDefine.dataStep = 2;
     $('#kpxcDefine-btn-again').style.display = 'inline-block';
@@ -272,9 +280,18 @@ kpxcDefine.prepareStep2 = function() {
 kpxcDefine.prepareStep3 = function() {
     $('#kpxcDefine-help').style.marginBottom = '10px';
     $('#kpxcDefine-help').textContent = tr('defineHelpText');
+
+    removeContent('div.kpxcDefine-fixed-field:not(.kpxcDefine-fixed-username-field):not(.kpxcDefine-fixed-password-field)');
     $('#kpxcDefine-chooser-headline').textContent = tr('defineConfirmSelection');
     kpxcDefine.dataStep = 3;
     $('#kpxcDefine-btn-skip').style.display = 'none';
     $('#kpxcDefine-btn-again').style.display = 'inline-block';
     $('#kpxcDefine-btn-confirm').style.display = 'inline-block';
+};
+
+const removeContent = function(pattern) {
+    const elems = document.querySelectorAll(pattern);
+    for (const e of elems) {
+        e.remove();
+    }
 };
