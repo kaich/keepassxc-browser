@@ -23,6 +23,9 @@ $(function() {
             options.initAbout();
         });
     });
+
+    // Set options page language to HTML element from locale
+    $('html').attr('lang', browser.i18n.getUILanguage());
 });
 
 var options = options || {};
