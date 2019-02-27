@@ -471,4 +471,4 @@ const getBrowserId = function() {
     }
 
     return 'Other/Unknown';
-}
+};
