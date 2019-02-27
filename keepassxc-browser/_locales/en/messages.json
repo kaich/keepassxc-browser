@@ -195,10 +195,6 @@
         "message": "You can also use the numbers to choose the input fields from keyboard.",
         "description": "Help text when choosing custom login fields."
     },
-    "defineKeyboardHelpText": {
-        "message": "(Esc) Dismiss, (S) Skip, (A) Again, (C) Confirm, (M) Show more, (D) Discard selection",
-        "description": "Help text for keyboard navigation with custom login fields."
-    },
     "username": {
         "message": "Username",
         "description": "General text for username."
@@ -782,6 +778,18 @@
     "optionsAboutLicenses": {
         "message": "Licenses",
         "description": "About page text of licenses."
+    },
+    "optionsAboutReportBugs": {
+        "message": "Report bugs",
+        "description": "About page text of reporting bugs."
+    },
+    "optionsAboutCreateNewIssue": {
+        "message": "Create new issue on GitHub",
+        "description": "Link text for creating a new issue."
+    },
+    "optionsAboutDebugInfo": {
+        "message": "The following debug info can be used",
+        "description": "Debug info text."
     },
     "optionsErrorInvalidValue": {
         "message": "Invalid value. Please check the input.",

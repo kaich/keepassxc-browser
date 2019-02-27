@@ -179,6 +179,7 @@ options.showKeePassXCVersions = function(response) {
     $('#tab-general-settings .kphVersion:first em.yourVersion:first').text(response.current);
     $('#tab-general-settings .kphVersion:first em.latestVersion:first').text(response.latest);
     $('#tab-about em.versionKPH').text(response.current);
+    $('#tab-about span.kpxcVersion').text(response.current);
     $('#tab-general-settings button.checkUpdateKeePassXC:first').attr('disabled', false);
 };
 
@@ -430,7 +431,11 @@ options.initSitePreferences = function() {
 };
 
 options.initAbout = function() {
-    $('#tab-about em.versionCIP').text(browser.runtime.getManifest().version);
+    const version = browser.runtime.getManifest().version;
+    $('#tab-about em.versionCIP').text(version);
+    $('#tab-about span.kpxcbrVersion').text(version);
+    $('#tab-about span.kpxcbrOS').text(navigator.platform);
+    $('#tab-about span.kpxcbrBrowser').text(getBrowserId());
 
     // Hides keyboard shortcut configure button if Firefox version is < 60 (API is not compatible)
     if (isFirefox() && Number(navigator.userAgent.substr(navigator.userAgent.lastIndexOf('/') + 1, 2)) < 60) {
@@ -454,3 +459,16 @@ options.createWarning = function(elem, text) {
         elem.parentElement.removeChild(banner);
     }, 5000);
 };
+
+const getBrowserId = function() {
+    if (navigator.userAgent.indexOf('Firefox') > -1) {
+        return 'Mozilla Firefox ' + navigator.userAgent.substr(navigator.userAgent.lastIndexOf('/') + 1);
+    } else if (navigator.userAgent.indexOf('Chrome') > -1) {
+        let startPos = navigator.userAgent.indexOf('Chrome');
+        startPos = navigator.userAgent.indexOf('/', startPos) + 1;
+        const version = navigator.userAgent.substring(startPos, navigator.userAgent.indexOf('Safari'));
+        return 'Chrome/Chromium ' + version;
+    }
+
+    return 'Other/Unknown';
+}

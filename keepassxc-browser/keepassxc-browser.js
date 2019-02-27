@@ -602,6 +602,15 @@ cipDefine.initDescription = function() {
     const $keyboardHelp = jQuery('<div>').addClass('b2c-chooser-help').attr('id', 'b2c-keyboardHelp');
     $description.append($keyboardHelp);
 
+    // Show keyboard shortcuts help text
+    jQuery('div#b2c-keyboardHelp').text(`${tr('optionsKeyboardShortcutsHeader')}:`).css('margin-bottom', '5px'); 
+    jQuery('div#b2c-keyboardHelp').append($('<br><kbd>Escape</kbd>')).append(' ' + tr('defineDismiss'));
+    jQuery('div#b2c-keyboardHelp').append($('<br><kbd>S</kbd>')).append(' ' + tr('defineSkip'));
+    jQuery('div#b2c-keyboardHelp').append($('<br><kbd>A</kbd>')).append(' ' + tr('defineAgain'));
+    jQuery('div#b2c-keyboardHelp').append($('<br><kbd>C</kbd>')).append(' ' + tr('defineConfirm'));
+    jQuery('div#b2c-keyboardHelp').append($('<br><kbd>M</kbd>')).append(' ' + tr('defineMore'));
+    jQuery('div#b2c-keyboardHelp').append($('<br><kbd>D</kbd>')).append(' ' + tr('defineDiscard'));
+
     const $btnDismiss = jQuery('<button>').text(tr('defineDismiss')).attr('id', 'b2c-btn-dismiss')
         .addClass('btn')
         .addClass('btn-danger')
@@ -738,7 +747,6 @@ cipDefine.markFields = function($chooser, $pattern) {
 
 cipDefine.prepareStep1 = function() {
     jQuery('div#b2c-help').text(tr('defineKeyboardText')).css('margin-bottom', '5px');
-    jQuery('div#b2c-keyboardHelp').text(tr('defineKeyboardHelpText')).css('margin-bottom', '5px');
     jQuery('div#b2c-cipDefine-fields').removeData('username');
     jQuery('div#b2c-cipDefine-fields').removeData('password');
     jQuery('div.b2c-fixed-field', jQuery('div#b2c-cipDefine-fields')).remove();
@@ -798,6 +806,10 @@ cipDefine.more = function() {
 };
 
 cipDefine.confirm = function() {
+    if ($('button#b2c-btn-skip:first').data('step') !== '3') {
+        return;
+    }
+
     if (!cip.settings['defined-custom-fields']) {
         cip.settings['defined-custom-fields'] = {};
     }
