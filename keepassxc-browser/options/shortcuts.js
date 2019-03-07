@@ -18,7 +18,7 @@ for (const b of saveButtons) {
 const resetButtons = document.querySelectorAll('.btn-danger');
 for (const b of resetButtons) {
     b.addEventListener('click', (e) => {
-        resetShortcut(b.parentElement.children[1].getAttribute('id'))
+        resetShortcut(b.parentElement.children[1].getAttribute('id'));
     });
 }
 

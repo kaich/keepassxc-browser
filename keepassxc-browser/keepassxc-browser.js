@@ -730,7 +730,7 @@ cipDefine.markFields = function($chooser, $pattern) {
                 .css('width', jQuery(this).outerWidth())
                 .css('height', jQuery(this).outerHeight())
                 .attr('data-cip-id', jQuery(this).attr('data-cip-id'))
-                .text(String(index) + '.')
+                .text(String(index))
                 .click(cipDefine.eventFieldClick)
                 .hover(function() {
                     jQuery(this).addClass('b2c-fixed-hover-field');
@@ -738,8 +738,8 @@ cipDefine.markFields = function($chooser, $pattern) {
                     jQuery(this).removeClass('b2c-fixed-hover-field');
                 });
             $chooser.append($field);
+            ++index;
         }
-        ++index;
     });
 
     $('b2c-fixed-field:first').focus();
